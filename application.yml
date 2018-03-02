@@ -1,0 +1,51 @@
+##################################################################
+#  Server Section
+#  (1) server.port  : defaul value = 0 , is random port
+##################################################################
+server:
+  port: ${PORT:${SERVER_PORT:0}}
+  
+  
+##################################################################
+#  Service Discover Section
+#  (1) eureka.instance : 
+#    (1.1) leaseRenewalIntervalInSeconds : Client 與 Server之間  heartbeat 更新頻率 5
+#    (1.2) leaseExpirationDurationInSeconds :
+#    (1.3) metadataMap :
+#  (2) eureka.client.serviceUrl : 
+#    (2.1) defaultZone : 預設到那一個zone找資料
+##################################################################
+eureka:
+  server:
+    enable-self-preservation: false
+  instance:
+    hostname: localhost
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 30
+    instanceId: ${spring.application.name}
+    metadataMap: 
+      instanceId: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${eureka.zone:http://192.168.190.179:8761/eureka/}
+    healthcheck.enabled: false
+
+##################################################################
+#  endpoints Section
+#  (1) endpoints.shutdown.enabled : start Shutdown hook 
+##################################################################
+endpoints:
+  restart:
+    enabled: true
+  jmx:
+    enabled: false
+  shutdown:
+    enabled: true
+    
+##################################################################
+#  Database Section
+#    useDefult : ture -> will use in-memory DB H2
+#    useCapim: true -> will get password from capim
+##################################################################
+

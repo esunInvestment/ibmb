@@ -1,0 +1,32 @@
+server:
+  port: ${register.port:8763}
+  servlet-path: /*
+
+endpoints.restart.enabled: true
+  
+info:
+  component: API Gateway
+
+spring:
+  jmx:
+    default-domain: zuul
+
+server.max-http-header-size: 16384
+zuul.RibbonRoutingFilter.route.disable: true
+health.inteval: ${o.health.inteval:30000}
+socket.timeout: ${o.socket.timeout:120000}
+connection.timeout: ${o.connection.timeout:10000}
+server.name: ${o.server.name:AP1}
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceurl:
+      defaultzone: ${eureka.zone:http://192.168.190.179:8761/eureka/}
+	
+zuul:
+  routes:
+    sample: /sample/**
